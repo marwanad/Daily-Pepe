@@ -12,7 +12,7 @@ def incoming():
         return Response(status=403)
 
     messages = messages_from_json(request.json['messages'])
-
+    print(messages)
     for message in messages:
         if isinstance(message, TextMessage):
             kik.send_messages([

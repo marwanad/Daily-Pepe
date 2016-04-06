@@ -3,7 +3,8 @@ from flask import Flask, request, Response
 from kik.messages import messages_from_json, TextMessage
 
 from . import main
-from ..setup import kik
+import sys
+from ..setup import kik, bot_config
 
 @main.route('/receive', methods=['POST'])
 def incoming():

@@ -1,5 +1,5 @@
 from flask import request, Response
-from kik.messages import messages_from_json, TextMessage
+from kik.messages import messages_from_json, TextMessage, PictureMessage
 
 from . import main, kik
 
@@ -11,13 +11,23 @@ def incoming():
     messages = messages_from_json(request.json['messages'])
 
     for message in messages:
+        body_lower = message.body.lower()
         if isinstance(message, TextMessage):
-            kik.send_messages([
+            if body_lower == "ayy lmao":
+                kik.send_messages([
+                TextMessage(
+                    to=message.from_user,
+                    chat_id=message.chat_id,
+                    body=message.body
+                )
+            ])
+            else:
+                kik.send_messages([
                 PictureMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
                     pic_url="http://s17.postimg.org/k3nil5m3z/1445202676136.jpg"
                 )
             ])
-
+                
         return Response(status=200)

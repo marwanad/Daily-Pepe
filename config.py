@@ -1,21 +1,27 @@
 """
-	Stores the Flask application configurations
+Stores the Flask application configurations
 """
 
-class Config(object):
-	@staticmethod
-	def init_app(app):
-		pass
+import os
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'flask-key'
+    @staticmethod
+    def init_app(app):
+        pass
+
 
 class DevelopmentConfig(Config):
-	DEBUG = True
+    DEBUG = True
 
 class ProductionConfig(Config):
-	# custom prod config will be added here
-	pass
+    pass
+
 
 config = {
-	'development' : DevelopmentConfig,
-	'production' : ProductionConfig,
-	'default' : DevelopmentConfig
+    'development': DevelopmentConfig,
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
 }

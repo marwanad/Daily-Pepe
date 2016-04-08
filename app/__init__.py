@@ -2,13 +2,12 @@ from flask import Flask
 from config import config
 
 # Creates an application instance based on the configuration provided
-def create_app(configuration):
-	app = Flask(__name__)
-	app.config.from_object(config[configuration])
-	
-	from .bot import bot
-	app.register_blueprint(bot)
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
 
-	config[configuration].init_app(app)
+    from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
 
-	return app
+    return app

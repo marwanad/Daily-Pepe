@@ -13,10 +13,10 @@ def incoming():
     for message in messages:
         if isinstance(message, TextMessage):
             kik.send_messages([
-                TextMessage(
+                PictureMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    body=message.body
+                    pic_url="http://i.imgur.com/5o2q9nY.png"
                 )
             ])
 

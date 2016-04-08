@@ -11,9 +11,17 @@ def incoming():
     messages = messages_from_json(request.json['messages'])
 
     for message in messages:
-        body_lower = message.body.lower()
         if isinstance(message, TextMessage):
-            if body_lower == "ayy lmao":
+            body_lower = message.body.lower()
+            if body_lower == "another one":
+                kik.send_messages([
+                PictureMessage(
+                    to=message.from_user,
+                    chat_id=message.chat_id,
+                    pic_url="http://40.media.tumblr.com/108878995b5b74bb89618dab799ded58/tumblr_nzwkikqhcH1titub2o1_1280.jpg"
+                )
+            ])
+            elif body_lower == "ayy lmao":
                 kik.send_messages([
                 TextMessage(
                     to=message.from_user,

@@ -6,7 +6,7 @@ from . import main
 import sys
 from ..setup import kik, bot_config
 
-@main.route('/incoming', methods=['POST'])
+@main.route('/incoming/', methods=['POST'])
 def incoming():
     print("incoming")
     if not kik.verify_signature(request.headers.get('X-Kik-Signature'), request.get_data()):

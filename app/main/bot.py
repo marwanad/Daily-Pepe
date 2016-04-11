@@ -1,10 +1,16 @@
-from flask import request, Response
+from flask import request, Response, jsonify
 from kik.messages import messages_from_json, TextMessage, PictureMessage
-
+import requests, requests_cache
+import random
 from . import main, kik
+from setup import IMGUR_CLIENT_ID as imgur_client
+from setup import pepe_url
+
+requests_cache.install_cache('pepe_cache', backend='sqlite', expire_after=86400)
 
 @main.route('/incoming', methods=['POST'])
 def incoming():
+
     if not kik.verify_signature(request.headers.get('X-Kik-Signature'), request.get_data()):
         return Response(status=403)
 
@@ -30,11 +36,17 @@ def incoming():
                 )
             ])
             else:
+                pepe_dict = requests.get(pepe_url, headers={'Authorization' : 'Client-ID %s' %imgur_client}).json()
+
+                pepe_data = pepe_dict['data']['images']
+
+                pimage_list = [pepe['link'] for pepe in pepe_data if pepe['type'] == 'image/jpeg' and pepe['nsfw'] is None]
+                
                 kik.send_messages([
                 PictureMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    pic_url="http://s17.postimg.org/k3nil5m3z/1445202676136.jpg"
+                    pic_url=random.choice(pimage_list)
                 )
             ])
                 
